@@ -9,7 +9,8 @@ namespace API.Models
     {
         public string? Name { get; set; }
         public string? Picture {  get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+
         [DefaultValue(true)]   
         public bool Active {  get; set; }
    

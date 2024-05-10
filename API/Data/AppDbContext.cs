@@ -9,8 +9,7 @@ namespace API.Data
         public AppDbContext()
         {
         }
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-        
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }    
         public DbSet<SalaryCalculation> SalaryCalculation { get; set;}
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Form> Forms { get; set; }

@@ -19,14 +19,6 @@ namespace API.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-
-        public async Task<User> Login(LoginDto loginDto)
-        {
-           var userRepository = _unitOfWork.GetRepository<User>();
-           var user = await userRepository.GetByEmailAsync(loginDto.Email);
-           return user;
-        }
-
         public async Task<List<User>> GetAllUsersAsync()
         {
             var userRepository = _unitOfWork.GetRepository<User>();
@@ -34,7 +26,7 @@ namespace API.Services
             return users;
         }
 
-        public async Task<User> GetUserByIdAsync(Guid id)
+        public async Task<User> GetUserByIdAsync(string id)
         {
             var userRepository = _unitOfWork.GetRepository<User>();
             var user = await userRepository.GetByIdAsync(id);
@@ -50,7 +42,7 @@ namespace API.Services
             return user;
         }
 
-        public async Task<User> UpdateUserAsync(Guid id, UserDto userDto)
+        public async Task<User> UpdateUserAsync(string id, UserDto userDto)
         {
             var userRepository = _unitOfWork.GetRepository<User>();
             var existingUser = await userRepository.GetByIdAsync(id);
@@ -64,7 +56,7 @@ namespace API.Services
             return existingUser;
         }
 
-        public async Task DeleteUserAsync(Guid id)
+        public async Task DeleteUserAsync(string id)  
         {
             var userRepository = _unitOfWork.GetRepository<User>();
             var deletedUser = await userRepository.GetByIdAsync(id);

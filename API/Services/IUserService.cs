@@ -6,9 +6,9 @@ namespace API.Services
     public interface IUserService
     {
         Task<List<User>> GetAllUsersAsync();
-        Task<User> GetUserByIdAsync(Guid id);
+        Task<User> GetUserByIdAsync(string id);
         Task<User> CreateUserAsync(UserDto userDto);
-        Task<User> UpdateUserAsync(Guid id, UserDto userDto);
-        Task DeleteUserAsync(Guid id);
+        Task<User> UpdateUserAsync(string id, UserDto userDto);
+        Task DeleteUserAsync(string id);
     }
 }

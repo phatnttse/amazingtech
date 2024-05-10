@@ -11,7 +11,7 @@ namespace API.Models
 
         [Required]
         [ForeignKey("UserId")]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal ContractSalary { get; set; }

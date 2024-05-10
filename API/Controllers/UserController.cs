@@ -39,7 +39,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserById(Guid id)
+        public async Task<ActionResult<User>> GetUserById(string id)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteUser([FromRoute] Guid id)
+        public async Task<ActionResult> DeleteUser([FromRoute] string id)
         {
             try
             {

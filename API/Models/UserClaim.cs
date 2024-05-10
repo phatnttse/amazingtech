@@ -11,7 +11,7 @@ namespace API.Models
         public Guid UserClaimId { get; set; }
 
         [ForeignKey(nameof(User))]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
 
         public string? ClaimType { get; set; }
