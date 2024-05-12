@@ -4,9 +4,7 @@ using API.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 
 namespace API.Services
 {
@@ -39,15 +37,6 @@ namespace API.Services
             return user;
         }
 
-        public async Task<User> CreateUserAsync(UserDto userDto)
-        {
-            var userRepository = _unitOfWork.GetRepository<User>();
-            var user = _mapper.Map<User>(userDto);
-            await userRepository.CreateAsync(user);
-            await _unitOfWork.SaveChangesAsync();
-            return user;
-        }
-
         public async Task<User> UpdateUserAsync(string id, UserDto userDto)
         {
             var userRepository = _unitOfWork.GetRepository<User>();
@@ -74,6 +63,10 @@ namespace API.Services
 
         public async Task<User> Register(RegisterDto registerDto)
         {
+            if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
+                throw new Exception($"Email {registerDto.Email} already taken");
+
+
             var newUser = _mapper.Map<User>(registerDto);
 
             var result = await _userManager.CreateAsync(newUser, registerDto.Password);
@@ -115,6 +108,7 @@ namespace API.Services
             return null;
 
         }
+
     }
 
 }

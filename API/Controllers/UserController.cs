@@ -3,12 +3,8 @@ using API.Models;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+
 
 namespace API.Controllers
 {
@@ -27,13 +23,13 @@ namespace API.Controllers
 
         }
 
-        
+
         [HttpGet]
         public async Task<ActionResult<User>> GetAllUsers()
         {
             try
             {
-                    var users = await _userService.GetAllUsersAsync();
+                var users = await _userService.GetAllUsersAsync();
                 return Ok(users);
 
             }
@@ -43,7 +39,6 @@ namespace API.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUserById(string id)
         {
@@ -64,6 +59,7 @@ namespace API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register([FromBody] RegisterDto registerDto)
         {
@@ -80,6 +76,7 @@ namespace API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login([FromBody] LoginDto loginDto)
         {

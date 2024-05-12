@@ -18,11 +18,14 @@ namespace API.Extensions
             services.AddIdentityCore<User>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
+                opt.User.RequireUniqueEmail = true;
+                
             })
                   .AddEntityFrameworkStores<AppDbContext>();
 
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("t4.z=,pn#XJx>W7rDv?]b9qPsR3U*hB~"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Secret_Key"]));
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
                 {
