@@ -10,5 +10,9 @@ namespace API.Services
         Task<User> CreateUserAsync(UserDto userDto);
         Task<User> UpdateUserAsync(string id, UserDto userDto);
         Task DeleteUserAsync(string id);
+
+        Task<User> Register(RegisterDto registerDto);
+
+        Task<string> Login(LoginDto loginDto);
     }
 }

@@ -11,6 +11,10 @@ namespace API.Core
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>()
                .ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<RegisterDto, User>()
+           .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+           .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
+           .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
         }
     }
 }
