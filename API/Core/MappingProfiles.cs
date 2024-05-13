@@ -15,6 +15,9 @@ namespace API.Core
            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+
+            CreateMap<PhotoUploadDto, Photo>()
+              .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PublicId));
         }
     }
 }

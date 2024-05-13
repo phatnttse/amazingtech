@@ -7,13 +7,10 @@ namespace API.Models
     public class Attachment
     {
         [Key]
-        public int Id { get; set; }
+        public required string Id { get; set; }
 
         [Required]
-        public string FileName { get; set; }
-
-        [Required]
-        public string FilePath { get; set; }
+        public required string Url { get; set; }
 
         public DateTime UploadedAt { get; set; } = DateTime.Now;
 

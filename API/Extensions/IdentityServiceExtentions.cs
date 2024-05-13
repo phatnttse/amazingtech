@@ -3,10 +3,7 @@ using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace API.Extensions
@@ -19,12 +16,15 @@ namespace API.Extensions
             {
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.User.RequireUniqueEmail = true;
-                
+
             })
-                  .AddEntityFrameworkStores<AppDbContext>();
+                  .AddEntityFrameworkStores<AppDbContext>()
+                  ;
+                
+                  
+           
 
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Secret_Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
@@ -33,8 +33,11 @@ namespace API.Extensions
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = key,
-                        ValidateIssuer = false,
-                        ValidateAudience = false
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidAudience = configuration["Jwt:Audience"],
+                        ValidIssuer = configuration["Jwt:Issuer"]
                     };
 
                 });

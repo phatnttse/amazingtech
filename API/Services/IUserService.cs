@@ -1,5 +1,6 @@
 ﻿using API.Dtos;
 using API.Models;
+using API.Responses;
 
 namespace API.Services
 {
@@ -9,7 +10,7 @@ namespace API.Services
         Task<User> GetUserByIdAsync(string id);
         Task<User> UpdateUserAsync(string id, UserDto userDto);
         Task DeleteUserAsync(string id);
-        Task<User> Register(RegisterDto registerDto);
-        Task<string> Login(LoginDto loginDto);
+        Task<User?> Register(RegisterDto registerDto);
+        Task<LoginResponse> Login(LoginDto loginDto);
     }
 }

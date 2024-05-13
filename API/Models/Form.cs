@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models
@@ -10,7 +11,7 @@ namespace API.Models
         public int Id { get; set; }
 
         [ForeignKey(nameof(User))]
-        public string UserId { get; set; } 
+        public required string UserId { get; set; } 
         public User User { get; set; } 
 
         [Required]  
@@ -24,9 +25,11 @@ namespace API.Models
 
         public string? Description { get; set; }
 
-        public bool IsApproved { get; set; }
+        [DefaultValue(false)]
+        public bool IsApproved { get; set; } = false;
 
-        public bool IsRejected { get; set; }
+        [DefaultValue(false)]
+        public bool IsRejected { get; set; } = false;
 
         public DateTime? ApprovedAt { get; set; }
 

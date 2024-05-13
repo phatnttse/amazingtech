@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models
 {
-    [Table("RoleClaims")]
     public class RoleClaim
     {
         [Key]

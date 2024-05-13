@@ -3,6 +3,8 @@ using API.Data;
 using API.Repositories;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -19,6 +21,8 @@ namespace API.Extensions
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPhotoService, PhotoService>();
+
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(opt =>
@@ -52,22 +56,7 @@ namespace API.Extensions
 
             services.AddCors();
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-
-            // Add JWT authentication
-            //var key = Encoding.ASCII.GetBytes(config["JwtSettings:Key"]); //secret key
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateIssuer = true,
-            //            ValidateAudience = true,
-            //            ValidateIssuerSigningKey = true,
-            //            ValidIssuer = config["JwtSettings:Issuer"],
-            //            ValidAudience = config["JwtSettings:Audience"],
-            //            IssuerSigningKey = new SymmetricSecurityKey(key)
-            //        };
-            //    });
+            services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
 
             return services;
         }

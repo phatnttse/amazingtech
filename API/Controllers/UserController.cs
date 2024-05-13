@@ -23,7 +23,6 @@ namespace API.Controllers
 
         }
 
-
         [HttpGet]
         public async Task<ActionResult<User>> GetAllUsers()
         {

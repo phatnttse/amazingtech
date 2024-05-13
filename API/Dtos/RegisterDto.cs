@@ -1,12 +1,19 @@
-﻿namespace API.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API.Dtos
 {
     public class RegisterDto
     {
-        
-        public required string Email { get; set; }
+        [Required]
+        [EmailAddress]
+        [DataType(DataType.EmailAddress)]
+        public required string Email { get; set; } 
 
-        public required string Password { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        public required string Password { get; set; } 
 
-        public required string Name { get; set; }
+        [Required]
+        public required string Name { get; set; } 
     }
 }

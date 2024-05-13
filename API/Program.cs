@@ -36,7 +36,7 @@ namespace API
                 .AllowAnyHeader();
             });
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
