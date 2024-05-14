@@ -2,7 +2,6 @@
 using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -18,12 +17,8 @@ namespace API.Extensions
                 opt.User.RequireUniqueEmail = true;
 
             })
-                  .AddEntityFrameworkStores<AppDbContext>()
-                  ;
+                  .AddEntityFrameworkStores<AppDbContext>();
                 
-                  
-           
-
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

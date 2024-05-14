@@ -6,8 +6,13 @@ namespace API.Models
     [Table("SalaryCalculation")]
     public class SalaryCalculation
     {
+        public SalaryCalculation()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         [Key]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [ForeignKey("UserId")]

@@ -6,6 +6,11 @@ namespace API.Models
 {
     public class UserRole
     {
+        public UserRole()
+        {
+            
+        }
+
         [Key]
         public Guid UserRoleId { get; set; }
 

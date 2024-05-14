@@ -5,7 +5,11 @@ namespace API.Models
 {
     public class Role : IdentityRole
     {
-   
+        public Role()
+        {
+            
+        }
+
     }
 
 }

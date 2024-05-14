@@ -6,6 +6,10 @@ namespace API.Models
     [Table("Attachments")]
     public class Attachment
     {
+        public Attachment()
+        {
+            
+        }
         [Key]
         public required string Id { get; set; }
 
@@ -14,7 +18,7 @@ namespace API.Models
 
         public DateTime UploadedAt { get; set; } = DateTime.Now;
 
-        public int FormId { get; set; } // Khóa ngoại đến đơn
+        public required string FormId { get; set; } // Khóa ngoại đến đơn
 
         [ForeignKey("FormId")]
         public virtual Form Form { get; set; } // Đơn mà tệp đính kèm thuộc về

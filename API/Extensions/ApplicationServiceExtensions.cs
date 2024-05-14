@@ -2,13 +2,8 @@
 using API.Data;
 using API.Repositories;
 using API.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
 
 namespace API.Extensions
 {
@@ -21,7 +16,8 @@ namespace API.Extensions
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IPhotoService, PhotoService>();
+            services.AddScoped<IFormService, FormService>();
+            services.AddScoped<IAttachmentService, AttachmentService>();
 
 
             services.AddEndpointsApiExplorer();

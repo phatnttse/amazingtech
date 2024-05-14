@@ -7,15 +7,20 @@ namespace API.Models
     [Table("Forms")]
     public class Form
     {
+        public Form()
+        {
+            Id = Guid.NewGuid().ToString();  
+        }
+
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [ForeignKey(nameof(User))]
-        public required string UserId { get; set; } 
-        public User User { get; set; } 
+        public string UserId { get; set; }
+        public User User { get; set; }
 
-        [Required]  
-        public FormType Type { get; set; } 
+        [Required]
+        public FormType Type { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;

@@ -6,6 +6,11 @@ namespace API.Models
 {
     public class RoleClaim
     {
+        public RoleClaim()
+        {
+            
+        }
+
         [Key]
         public Guid RoleClaimId { get; set; }
 

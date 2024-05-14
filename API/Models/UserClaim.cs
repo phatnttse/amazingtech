@@ -6,6 +6,11 @@ namespace API.Models
 {
     public class UserClaim
     {
+        public UserClaim()
+        {
+            
+        }
+
         [Key]
         public Guid UserClaimId { get; set; }
 

@@ -89,7 +89,7 @@ namespace API.Services
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(newUser, "Manager");
+                //await _userManager.AddToRoleAsync(newUser, "Manager");
 
                 await _unitOfWork.SaveChangesAsync();
 
