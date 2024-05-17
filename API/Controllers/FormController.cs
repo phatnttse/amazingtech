@@ -1,12 +1,11 @@
 ﻿using API.Dtos;
-using API.Models;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class FormController : ControllerBase
     {

@@ -1,5 +1,6 @@
 ﻿using API.Core;
 using API.Data;
+using API.IServices;
 using API.Repositories;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,9 @@ namespace API.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IFormService, FormService>();
             services.AddScoped<IAttachmentService, AttachmentService>();
+            services.AddScoped<ISalaryCalculationService, SalaryCalculationService>();
+            services.AddScoped<IRoleService, RoleService>();
+
 
 
             services.AddEndpointsApiExplorer();

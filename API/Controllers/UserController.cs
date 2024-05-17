@@ -1,5 +1,5 @@
 ﻿using API.Dtos;
-using API.Models;
+using API.Responses;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -24,12 +24,14 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<User>> GetAllUsers()
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<UserResponse>> GetAllUsers()
         {
             try
             {
                 var users = await _userService.GetAllUsersAsync();
-                return Ok(users);
+
+                return Ok(_mapper.Map<List<UserResponse>>(users));
 
             }
             catch (Exception ex)
@@ -37,9 +39,9 @@ namespace API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        [Authorize(Roles = "Employee, Admin")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserById(string id)
+        public async Task<ActionResult<UserResponse>> GetUserById(string id)
         {
             try
             {
@@ -49,7 +51,7 @@ namespace API.Controllers
                 {
                     return NotFound("User does not exist");
                 }
-                return Ok(existingUser);
+                return Ok(_mapper.Map<UserResponse>(existingUser));
 
             }
             catch (Exception ex)
@@ -60,13 +62,13 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register([FromBody] RegisterDto registerDto)
+        public async Task<ActionResult<UserResponse>> Register([FromBody] RegisterDto registerDto)
         {
             try
             {
                 var newUser = await _userService.Register(registerDto);
 
-                return Ok(_mapper.Map<UserDto>(newUser));
+                return Ok(_mapper.Map<UserResponse>(newUser));
 
             }
             catch (Exception ex)
@@ -77,7 +79,7 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login([FromBody] LoginDto loginDto)
+        public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginDto loginDto)
         {
             var token = await _userService.Login(loginDto);
 
@@ -88,8 +90,9 @@ namespace API.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> EditUser([FromRoute] string id, [FromBody] UserDto userDto)
+        public async Task<ActionResult<UserResponse>> UpdateUser([FromRoute] string id, [FromBody] UpdateUserDto updateUserDto)
         {
             try
             {
@@ -97,9 +100,9 @@ namespace API.Controllers
                 if (existingUser == null)
                     return NotFound("User does not exist");
 
-                var updatedUser = await _userService.UpdateUserAsync(existingUser.Id, userDto);
+                var updatedUser = await _userService.UpdateUserAsync(existingUser.Id, updateUserDto);
 
-                return Ok(updatedUser);
+                return Ok(_mapper.Map<UserResponse>(updatedUser));
 
             }
             catch (Exception ex)
@@ -108,6 +111,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser([FromRoute] string id)
         {

@@ -14,19 +14,19 @@ namespace API.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        //private readonly RoleManager<Role> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ITokenService _tokenService;
 
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager, ITokenService tokenService
-            //RoleManager<Role> roleManager
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager, ITokenService tokenService,
+            RoleManager<IdentityRole> roleManager
             )
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _tokenService = tokenService;
-            //_roleManager = roleManager;
+            _roleManager = roleManager;
         }
         public async Task<List<User>> GetAllUsersAsync()
         {
@@ -35,14 +35,14 @@ namespace API.Services
             return users;
         }
 
-        public async Task<User> GetUserByIdAsync(string id)
+        public async Task<User?> GetUserByIdAsync(string id)
         {
             var userRepository = _unitOfWork.GetRepository<User>();
             var user = await userRepository.GetByIdAsync(id);
             return user;
         }
 
-        public async Task<User> UpdateUserAsync(string id, UserDto userDto)
+        public async Task<User> UpdateUserAsync(string id, UpdateUserDto updateUserDto)
         {
             var userRepository = _unitOfWork.GetRepository<User>();
 
@@ -52,7 +52,7 @@ namespace API.Services
                 throw new Exception("User does not exist");
 
 
-            _mapper.Map(userDto, existingUser);
+            _mapper.Map(updateUserDto, existingUser);
 
             await userRepository.UpdateAsync(existingUser);
 
@@ -78,18 +78,29 @@ namespace API.Services
             if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
                 throw new Exception($"Email {registerDto.Email} already taken");
 
-            //if (!await _roleManager.RoleExistsAsync("Manager"))
-            //{
-            //    await _roleManager.CreateAsync(new Role { Name = "Manager" });
-            //}
-
             var newUser = _mapper.Map<User>(registerDto);
 
             var result = await _userManager.CreateAsync(newUser, registerDto.Password);
 
+
+            if (!await _roleManager.RoleExistsAsync("Admin"))
+            {
+                await _roleManager.CreateAsync(new IdentityRole { Name = "Admin" });
+
+                await _userManager.AddToRoleAsync(newUser, "Admin");
+            }
+            else
+            {
+                if (!await _roleManager.RoleExistsAsync("Employee"))
+                    await _roleManager.CreateAsync(new IdentityRole { Name = "Employee" });
+
+
+                await _userManager.AddToRoleAsync(newUser, "Employee");
+
+            }
+
             if (result.Succeeded)
             {
-                //await _userManager.AddToRoleAsync(newUser, "Manager");
 
                 await _unitOfWork.SaveChangesAsync();
 
@@ -113,6 +124,7 @@ namespace API.Services
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
             if (user == null) throw new Exception("User does not exist");
+            if (!user.Active) throw new Exception("User is deleted");
 
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
 

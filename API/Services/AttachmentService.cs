@@ -28,7 +28,6 @@ namespace API.Services
                 );
             _cloudinary = new Cloudinary(account);
 
-
         }
 
         public async Task<List<AttachmentDto>?> AddAttachments(ICollection<IFormFile> files, string formId)
@@ -52,14 +51,6 @@ namespace API.Services
                     {
                         throw new Exception(uploadResult.Error.Message);
                     }
-
-                    //var attachmentDto = new AttachmentDto
-                    //{
-                    //    Id = uploadResult.PublicId,
-                    //    Url = uploadResult.SecureUrl.ToString(),
-                    //    UploadedAt = uploadResult.CreatedAt,
-                    //    FormId = formId
-                    //};
 
                     var attachment = new Attachment
                     {

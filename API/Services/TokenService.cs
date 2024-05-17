@@ -1,4 +1,5 @@
-﻿using API.Models;
+﻿using API.IServices;
+using API.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,21 +10,25 @@ namespace API.Services
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
-        public TokenService(IConfiguration configuration)
-        {
-
+        private readonly IRoleService _roleService;
+        public TokenService(IConfiguration configuration, IRoleService roleService)
+        {           
             _configuration = configuration;
+            _roleService = roleService;
 
         }
         public string CreateToken(User user)
         {
+            var userRole = _roleService.GetRoleByUserId(user.Id);
+            
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName!),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Email, user.Email!),              
+                new Claim(ClaimTypes.Email, user.Email!),
+                new Claim(ClaimTypes.Role, userRole.Result!.Name!)
             };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
             
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 

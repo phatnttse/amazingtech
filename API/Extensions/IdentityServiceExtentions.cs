@@ -2,6 +2,7 @@
 using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -11,17 +12,21 @@ namespace API.Extensions
     {
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddIdentityCore<User>(opt =>
+            services.AddIdentity<User, IdentityRole>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.User.RequireUniqueEmail = true;
 
             })
-                  .AddEntityFrameworkStores<AppDbContext>();
+                  .AddEntityFrameworkStores<AppDbContext>()
+                  .AddRoles<IdentityRole>();
                 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(x => {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(opt =>
                 {
                     opt.TokenValidationParameters = new TokenValidationParameters

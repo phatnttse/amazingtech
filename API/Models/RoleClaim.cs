@@ -12,11 +12,11 @@ namespace API.Models
         }
 
         [Key]
-        public Guid RoleClaimId { get; set; }
+        public  Guid RoleClaimId { get; set; }
 
         [ForeignKey(nameof(Role))]
-        public Guid RoleId { get; set; }
-        public Role Role { get; set; }
+        public required Guid RoleId { get; set; }
+        public Role? Role { get; set; }
 
         public string? ClaimType { get; set; }
         public string? ClaimValue { get; set; }

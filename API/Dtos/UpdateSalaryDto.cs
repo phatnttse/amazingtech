@@ -2,14 +2,9 @@
 
 namespace API.Dtos
 {
-    public class SalaryCalculationDto
+    public class UpdateSalaryDto
     {
-        public SalaryCalculationDto()
-        {
-            Id = Guid.NewGuid().ToString();
-        }
         public required string Id { get; set; }
-        public required string UserId { get; set; }
 
         [Range(0, int.MaxValue)]
         public required decimal ContractSalary { get; set; }
@@ -19,7 +14,5 @@ namespace API.Dtos
 
         [Range(0, 31)]
         public int TotalWorkingDaysInMonth { get; set; }
-
-       
     }
 }

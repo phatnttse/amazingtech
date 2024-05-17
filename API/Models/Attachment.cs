@@ -21,6 +21,6 @@ namespace API.Models
         public required string FormId { get; set; } // Khóa ngoại đến đơn
 
         [ForeignKey("FormId")]
-        public virtual Form Form { get; set; } // Đơn mà tệp đính kèm thuộc về
+        public virtual Form? Form { get; set; } // Đơn mà tệp đính kèm thuộc về
     }
 }

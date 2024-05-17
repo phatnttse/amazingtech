@@ -16,11 +16,11 @@ namespace API.Models
         public string Id { get; set; }
 
         [ForeignKey(nameof(User))]
-        public string UserId { get; set; }
-        public User User { get; set; }
+        public required string UserId { get; set; }
+        public User? User { get; set; }
 
         [Required]
-        public FormType Type { get; set; }
+        public required FormType Type { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
@@ -41,6 +41,6 @@ namespace API.Models
         public DateTime? RejectedAt { get; set; }
 
         // Danh sách tệp đính kèm
-        public ICollection<Attachment> Attachments { get; set; }
+        public ICollection<Attachment>? Attachments { get; set; }
     }
 }
