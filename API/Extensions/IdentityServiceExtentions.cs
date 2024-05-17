@@ -1,6 +1,5 @@
 ﻿using API.Data;
 using API.Models;
-using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -42,7 +41,11 @@ namespace API.Extensions
 
                 });
 
-            services.AddScoped<ITokenService, TokenService>();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("CanViewDashboard", policy =>
+                    policy.RequireClaim("Permission", "CanViewDashboard"));
+            });
 
             return services;
         }

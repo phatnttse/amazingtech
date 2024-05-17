@@ -1,6 +1,7 @@
 ﻿using API.Dtos;
 using API.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -18,6 +19,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "Employee")]
         [HttpPost("sent-form")]
         public async Task<ActionResult<FormDto>> SentForm([FromForm] FormDto formDto, [FromForm] ICollection<IFormFile> files)
         {
@@ -37,6 +39,7 @@ namespace API.Controllers
 
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPut("approve-form/{formId}")]
         public async Task<ActionResult<FormDto>> ApproveForm(string formId)
         {
@@ -54,6 +57,7 @@ namespace API.Controllers
 
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPut("reject-form/{formId}")]
         public async Task<ActionResult<FormDto>> RejectForm(string formId)
         {
@@ -71,6 +75,7 @@ namespace API.Controllers
 
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<ActionResult<List<FormDto>>> GetAllForms()
         {
@@ -91,6 +96,7 @@ namespace API.Controllers
             
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet("{formId}")]
         public async Task<ActionResult<FormDto>> GetFormById(string formId)
         {

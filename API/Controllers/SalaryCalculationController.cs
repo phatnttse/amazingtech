@@ -20,7 +20,7 @@ namespace API.Controllers
             _salaryCalculationService = salaryCalculationService;
         }
 
-    
+        [Authorize(Roles = "Manager, Employee")]    
         [HttpGet("user/{userId}")]
         public async Task<ActionResult<SalaryCalculationDto>> GetSalaryByUserId(string userId)
         {
@@ -40,6 +40,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet("position/{position}")]
         public async Task<ActionResult<List<SalaryCalculationDto>>> GetSalaryByPosition(Position position)
         {
@@ -55,7 +56,7 @@ namespace API.Controllers
             }
         }
 
-
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         public async Task<ActionResult<List<SalaryCalculationResponse>>> GetAllSalaryCalculations()
         {
@@ -71,6 +72,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPost("calculate-salary")]
         public async Task<ActionResult<SalaryCalculationResponse>> CreateSalaryCalculation(SalaryCalculationDto salaryCalculationDto)
         {
@@ -86,6 +88,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpPut("user/{userId}")]
         public async Task<ActionResult<SalaryCalculationResponse>> UpdateSalaryCalculation(string userId, UpdateSalaryDto updateSalaryDto)
         {

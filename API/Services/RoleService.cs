@@ -49,8 +49,9 @@ namespace API.Services
         {
             var user = await _userManager.FindByIdAsync(userId);
 
-            if (user == null)
-                throw new Exception("User not found");
+            if (user == null) throw new Exception("User not found");
+            if (!user.Active) throw new Exception("User is deleted");
+
 
             var roles = await _userManager.GetRolesAsync(user);
 
@@ -63,5 +64,35 @@ namespace API.Services
 
             return role;
         }
+
+        public async Task UpdateUserRoleAsync(string userId, string newRoleName)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null) throw new Exception("User not found");
+            if (!user.Active) throw new Exception("User is deleted");
+
+            var role = _roleManager.FindByNameAsync(newRoleName);
+
+            if (role == null) throw new Exception("Role doest not exist");
+
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+
+            if (currentRoles == null || !currentRoles.Any())
+            {
+                throw new Exception("User has no role assigned");
+            }
+          
+            // Xóa tất cả các vai trò hiện tại của người dùng
+            foreach (var userRole in currentRoles)
+            {
+                await _userManager.RemoveFromRoleAsync(user, userRole);
+            }
+
+            // Thêm vai trò mới cho người dùng
+            await _userManager.AddToRoleAsync(user, newRoleName);
+        }
+
     }
 }

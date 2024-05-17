@@ -31,7 +31,7 @@ namespace API.Services
         public async Task<List<User>> GetAllUsersAsync()
         {
             var userRepository = _unitOfWork.GetRepository<User>();
-            var users = await userRepository.GetAllAsync();
+            var users = await userRepository.GetQueryable().Where(u => u.Active).ToListAsync();
             return users;
         }
 
@@ -39,6 +39,10 @@ namespace API.Services
         {
             var userRepository = _unitOfWork.GetRepository<User>();
             var user = await userRepository.GetByIdAsync(id);
+
+            if (user == null) throw new Exception("User does not exist");
+            if (!user.Active) throw new Exception("User is deleted");
+
             return user;
         }
 
@@ -48,8 +52,8 @@ namespace API.Services
 
             var existingUser = await userRepository.GetByIdAsync(id);
 
-            if (existingUser == null)
-                throw new Exception("User does not exist");
+            if (existingUser == null) throw new Exception("User does not exist");
+            if (!existingUser.Active) throw new Exception("User is deleted");
 
 
             _mapper.Map(updateUserDto, existingUser);
@@ -65,9 +69,13 @@ namespace API.Services
         {
             var userRepository = _unitOfWork.GetRepository<User>();
 
-            var deletedUser = await userRepository.GetByIdAsync(id);
-            deletedUser.Active = false;
-            await userRepository.UpdateAsync(deletedUser);
+            var existingUser = await userRepository.GetByIdAsync(id);
+
+            if (existingUser == null) throw new Exception("User does not exist");
+            if (!existingUser.Active) throw new Exception("User is deleted");
+
+            existingUser.Active = false;
+            await userRepository.UpdateAsync(existingUser);
 
             await _unitOfWork.SaveChangesAsync();
         }
@@ -132,7 +140,7 @@ namespace API.Services
             {
                 var token = _tokenService.CreateToken(user);
 
-                return new LoginResponse { Message = "Login Successfully", Token = token };
+                return new LoginResponse { Message = "Login Successfully", Token = token.Result };
             }
 
             return new LoginResponse { Message = "Password incorrect", Token = null };

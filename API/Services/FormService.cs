@@ -27,7 +27,8 @@ namespace API.Services
             await _unitOfWork.GetRepository<Form>().CreateAsync(form);
 
             var attachments = await _attachmentService.AddAttachments(files, form.Id);
-                
+
+            if (attachments != null)                
             await _unitOfWork.SaveChangesAsync();
 
             return form;

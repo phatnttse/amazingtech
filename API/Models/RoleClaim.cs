@@ -1,24 +1,10 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Identity;
+
 
 namespace API.Models
 {
-    public class RoleClaim
+    public class RoleClaim : IdentityRoleClaim<string>
     {
-        public RoleClaim()
-        {
-            
-        }
-
-        [Key]
-        public  Guid RoleClaimId { get; set; }
-
-        [ForeignKey(nameof(Role))]
-        public required Guid RoleId { get; set; }
-        public Role? Role { get; set; }
-
-        public string? ClaimType { get; set; }
-        public string? ClaimValue { get; set; }
+        public string[] Claims { get; private set; }
     }
 }

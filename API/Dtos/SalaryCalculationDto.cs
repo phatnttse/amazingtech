@@ -8,7 +8,7 @@ namespace API.Dtos
         {
             Id = Guid.NewGuid().ToString();
         }
-        public required string Id { get; set; }
+        public string Id { get; set; }
         public required string UserId { get; set; }
 
         [Range(0, int.MaxValue)]

@@ -65,5 +65,21 @@ namespace API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("user/{userId}")]
+        public async Task<ActionResult> UpdateUserRole(string userId, UpdateUserRoleDto updateUserRoleDto)
+        {
+            try
+            {
+                await _roleService.UpdateUserRoleAsync(userId, updateUserRoleDto.RoleName);
+
+                return Ok("User role updated successfully");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

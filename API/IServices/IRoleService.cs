@@ -11,6 +11,7 @@ namespace API.IServices
 
         Task<IdentityRole> CreateRole(CreateRoleDto createRoleDto);
 
+        Task UpdateUserRoleAsync(string userId, string newRoleName);
 
     }
 }

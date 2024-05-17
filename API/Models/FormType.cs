@@ -4,6 +4,7 @@
     {
         JobTermination,
         LeaveOfAbsence,
+        SalaryIncrease,
         Other
     }
 }

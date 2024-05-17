@@ -21,6 +21,9 @@ namespace API.Extensions
             services.AddScoped<IAttachmentService, AttachmentService>();
             services.AddScoped<ISalaryCalculationService, SalaryCalculationService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IRoleClaimService, RoleClaimService>();
+
 
 
 
@@ -53,6 +56,7 @@ namespace API.Extensions
         }
     });
             });
+
 
             services.AddCors();
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);

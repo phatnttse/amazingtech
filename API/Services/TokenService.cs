@@ -11,13 +11,16 @@ namespace API.Services
     {
         private readonly IConfiguration _configuration;
         private readonly IRoleService _roleService;
-        public TokenService(IConfiguration configuration, IRoleService roleService)
-        {           
+        private readonly IRoleClaimService _roleClaimService;
+        public TokenService(IConfiguration configuration, IRoleService roleService, IRoleClaimService roleClaimService)
+        {
             _configuration = configuration;
             _roleService = roleService;
-
+            _roleClaimService = roleClaimService;
         }
-        public string CreateToken(User user)
+
+
+        public async Task<string> CreateToken(User user)
         {
             var userRole = _roleService.GetRoleByUserId(user.Id);
             
@@ -28,6 +31,11 @@ namespace API.Services
                 new Claim(ClaimTypes.Email, user.Email!),
                 new Claim(ClaimTypes.Role, userRole.Result!.Name!)
             };
+
+            var roleClaims = await _roleClaimService.GetClaimsByRoleAsync(userRole.Result!.Name!);
+            claims.AddRange(roleClaims);
+
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
             
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);

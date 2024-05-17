@@ -24,7 +24,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "CanViewDashboard")]
         public async Task<ActionResult<UserResponse>> GetAllUsers()
         {
             try
